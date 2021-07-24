@@ -7,7 +7,7 @@ using Toggl.Api.DataObjects;
 using Toggl.Api.QueryObjects;
 
 namespace CloudEng.InvoiceBuilder.Toggl {
-  public class TogglClientWrapper {
+  public class TogglClientWrapper : ITogglClientWrapper {
     private readonly IOptions<TogglConfiguration> _options;
 
     public TogglClientWrapper(IOptions<TogglConfiguration> options) {

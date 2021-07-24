@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+      <PackageReference Include="System.Linq.Async" Version="5.0.0" />
       <PackageReference Include="Toggl.Api" Version="8.0.4" />
     </ItemGroup>
 
