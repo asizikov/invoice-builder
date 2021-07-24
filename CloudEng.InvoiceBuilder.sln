@@ -12,6 +12,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudEng.InvoiceBuilder.Tog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudEng.InvoiceBuilder.Workflow", "src\CloudEng.InvoiceBuilder.Workflow\CloudEng.InvoiceBuilder.Workflow.csproj", "{A2F5A801-D32F-48AD-B58C-DB4E68437F14}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B89FA52C-BFD4-41F1-B37B-1C7BAD2C6800}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{95178660-5064-47C3-B0FF-06C8608BBDB1}"
+ProjectSection(SolutionItems) = preProject
+	.github\workflows\build.yml = .github\workflows\build.yml
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,5 +47,6 @@ Global
 		{B71218C2-CB97-46E2-A081-EEC8C4A4FE11} = {38766B5B-8DE6-4A88-BB65-A5B79DB48C28}
 		{B7076E6F-094A-46F2-A761-AD85915BD664} = {9E340399-C40E-4669-9D05-6C863015C219}
 		{A2F5A801-D32F-48AD-B58C-DB4E68437F14} = {38766B5B-8DE6-4A88-BB65-A5B79DB48C28}
+		{95178660-5064-47C3-B0FF-06C8608BBDB1} = {B89FA52C-BFD4-41F1-B37B-1C7BAD2C6800}
 	EndGlobalSection
 EndGlobal
