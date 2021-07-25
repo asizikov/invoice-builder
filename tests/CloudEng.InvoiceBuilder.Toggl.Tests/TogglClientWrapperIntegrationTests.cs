@@ -23,7 +23,7 @@ namespace CloudEng.InvoiceBuilder.Toggl.Tests {
       }));
 
       _testOutputHelper.WriteLine("go");
-      await foreach (var dayString in client.GetDetailedReportAsync().ToDaysAsync()) {
+      await foreach (var dayString in client.GetDetailedReportAsync(DateTime.Today).ToDaysAsync()) {
        // _testOutputHelper.WriteLine(dayString);
       }
       // await foreach (var reportTimeEntry in client.GetDetailedReportAsync()) {

@@ -18,11 +18,17 @@ namespace CloudEng.InvoiceBuilder.Workflow {
 
     public async Task<ReportData> Handle(DownloadReportDataCommand request, CancellationToken cancellationToken) {
       _logger.LogInformation("Ready to download report data for {Month}", request.Date.ToString("M"));
-      await foreach (var dayEntry in _togglClient.GetDetailedReportAsync().ToDaysAsync()) {
+
+      var result = new ReportData();
+      await foreach (var dayEntry in _togglClient.GetDetailedReportAsync(request.Date).ToDaysAsync()) {
         _logger.LogInformation("{Day}: {LoggedWork}", dayEntry.Day, dayEntry.Description);
+        result.DayEntries.Add(new DayEntry {
+          Day = dayEntry.Day,
+          Description = dayEntry.Description
+        });
       }
 
-      return new();
+      return result;
     }
   }
 }

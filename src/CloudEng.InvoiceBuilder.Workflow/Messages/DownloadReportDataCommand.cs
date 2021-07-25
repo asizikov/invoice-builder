@@ -5,7 +5,4 @@ namespace CloudEng.InvoiceBuilder.Workflow.Messages {
   public class DownloadReportDataCommand : IRequest<ReportData> {
     public DateTime Date { get; set; }
   }
-
-  public class ReportData {
-  }
 }

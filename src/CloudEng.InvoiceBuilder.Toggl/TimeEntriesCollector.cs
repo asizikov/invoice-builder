@@ -25,6 +25,10 @@ namespace CloudEng.InvoiceBuilder.Toggl {
         }
       }
 
+      if (days[currentDay] is not null && days[currentDay].Count > 0) {
+        yield return (currentDay, string.Join(',', days[currentDay]));
+      }
+
       void AppendDescription(int day, ReportTimeEntry reportTimeEntry) {
         days[day] ??= new List<string>();
         days[day].Add(reportTimeEntry.Description);

@@ -14,13 +14,13 @@ namespace CloudEng.InvoiceBuilder.Toggl {
       _options = options;
     }
 
-    public async IAsyncEnumerable<ReportTimeEntry> GetDetailedReportAsync() {
+    public async IAsyncEnumerable<ReportTimeEntry> GetDetailedReportAsync(DateTime requestDate) {
       var togglClient = new TogglClient(_options.Value.ApiKey);
       var completed = false;
       var enumerated = 0;
 
       for (var page = 1; !completed; page++) {
-        var detailedReport = await togglClient.Reports.GetFullDetailedReportAsync(BuildRequestParameters(page)).ConfigureAwait(false);
+        var detailedReport = await togglClient.Reports.GetFullDetailedReportAsync(BuildRequestParameters(page, requestDate)).ConfigureAwait(false);
         foreach (var entry in detailedReport.Data) {
           enumerated++;
           yield return entry;
@@ -32,8 +32,8 @@ namespace CloudEng.InvoiceBuilder.Toggl {
       }
     }
 
-    private DetailedReportParams BuildRequestParameters(int page) {
-      var today = DateTime.Today;
+    private DetailedReportParams BuildRequestParameters(int page, DateTime requestedDate) {
+      var today = requestedDate;
       var currentMonths = new DateTime(today.Year, today.Month, 1);
 
       return new DetailedReportParams {

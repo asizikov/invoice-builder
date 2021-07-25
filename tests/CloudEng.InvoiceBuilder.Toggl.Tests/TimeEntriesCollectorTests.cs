@@ -17,6 +17,7 @@ namespace CloudEng.InvoiceBuilder.Toggl.Tests {
       await foreach (var str in timeEntries.ToAsyncEnumerable().ToDaysAsync()) {
         expectedStrings[counter++].ShouldBe(str);
       }
+      counter.ShouldBe(testCase.ExpectedResults.Length);
     }
 
     public static TheoryData<GroupingTestCase> GroupingTestCases => new() {
@@ -53,6 +54,15 @@ namespace CloudEng.InvoiceBuilder.Toggl.Tests {
           }
         },
         ExpectedResults = new[] {(3, "3-0"), (28, "28-0"), (31, "31-0")}
+      },
+      new() {
+        TimeEntries = new List<ReportTimeEntry> {
+          new() {
+            Start = "2021-07-03",
+            Description = "3-0"
+          },
+        },
+        ExpectedResults = new[] {(3, "3-0")}
       }
     };
 
