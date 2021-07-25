@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using CloudEng.InvoiceBuilder.Workflow.Messages;
 using MediatR;
@@ -15,13 +16,17 @@ namespace CloudEng.InvoiceBuilder.Host {
     }
 
     [Function(nameof(DownloadReportFunction))]
-    public async Task Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "build")]
+    public async Task<FunctionResponse> BuildInvoiceAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "build")]
       HttpRequestData request, FunctionContext context) {
       var logger = context.GetLogger(nameof(DownloadReportFunction));
       var currentDate = DateTime.Now;
       var previousMonth = currentDate.AddMonths(-1);
       logger.LogInformation("Function triggered at {Date}, invoice will be built for {Month}", currentDate, previousMonth.ToString("M"));
       await _mediator.Send(new BuildInvoiceCommand {Date = previousMonth}).ConfigureAwait(false);
+      return new FunctionResponse {
+        HttpResponse = request.CreateResponse(HttpStatusCode.OK),
+        FileContent = "file,content"
+      };
     }
   }
 }
