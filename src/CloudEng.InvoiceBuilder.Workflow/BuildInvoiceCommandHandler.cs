@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CloudEng.InvoiceBuilder.Workflow {
-  public class BuildInvoiceCommandHandler : AsyncRequestHandler<BuildInvoiceCommand> {
+  public class BuildInvoiceCommandHandler : IRequestHandler<BuildInvoiceCommand, ReportData> {
     private readonly ILogger<BuildInvoiceCommandHandler> _logger;
     private readonly IMediator _mediator;
 
@@ -15,13 +15,14 @@ namespace CloudEng.InvoiceBuilder.Workflow {
       _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    protected override async Task Handle(BuildInvoiceCommand request, CancellationToken cancellationToken) {
+    public async Task<ReportData> Handle(BuildInvoiceCommand request, CancellationToken cancellationToken) {
       _logger.LogInformation("Invoice creation requested for {Month}", request.Date.Date.ToString("M"));
 
       var reportData = await _mediator.Send(new DownloadReportDataCommand {Date = request.Date}, cancellationToken)
         .ConfigureAwait(false);
 
       _logger.LogInformation("Report data successfully downloaded for {Month}", request.Date.ToString("M"));
+      return reportData;
     }
   }
 }

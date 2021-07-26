@@ -34,12 +34,12 @@ namespace CloudEng.InvoiceBuilder.Toggl {
 
     private DetailedReportParams BuildRequestParameters(int page, DateTime requestedDate) {
       var today = requestedDate;
-      var currentMonths = new DateTime(today.Year, today.Month, 1);
+      var currentMonth = new DateTime(today.Year, today.Month, 1);
 
       return new DetailedReportParams {
         WorkspaceId = _options.Value.WorkspaceId,
-        Since = currentMonths.AddMonths(-1).Date.ToString("yyyy-MM-dd"),
-        Until = currentMonths.AddDays(-1).Date.ToString("yyyy-MM-dd"),
+        Since = currentMonth.AddMonths(-1).Date.ToString("yyyy-MM-dd"),
+        Until = currentMonth.AddDays(-1).Date.ToString("yyyy-MM-dd"),
         UserAgent = "report-converter",
         Page = page
       };

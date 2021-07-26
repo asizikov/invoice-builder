@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using CloudEng.InvoiceBuilder.Workflow.Messages;
 using MediatR;
@@ -21,12 +23,23 @@ namespace CloudEng.InvoiceBuilder.Host {
       var logger = context.GetLogger(nameof(DownloadReportFunction));
       var currentDate = DateTime.Now;
       var previousMonth = currentDate.AddMonths(-1);
+
       logger.LogInformation("Function triggered at {Date}, invoice will be built for {Month}", currentDate, previousMonth.ToString("M"));
-      await _mediator.Send(new BuildInvoiceCommand {Date = previousMonth}).ConfigureAwait(false);
+
+      var reportData = await _mediator.Send(new BuildInvoiceCommand {Date = currentDate}).ConfigureAwait(false);
+
       return new FunctionResponse {
         HttpResponse = request.CreateResponse(HttpStatusCode.OK),
-        FileContent = "file,content"
+        FileContent = FormatCsvContent(reportData)
       };
+    }
+
+    private static string FormatCsvContent(ReportData reportData) {
+      var sb = new StringBuilder();
+      foreach (var dayEntry in reportData.DayEntries.OrderBy(d => d.Day)) {
+        sb.AppendLine($"{dayEntry.Day},\"{dayEntry.Description}\"");
+      }
+      return sb.ToString();
     }
   }
 }

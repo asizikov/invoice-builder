@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{95178660-5064-47C3-B0FF-06C8608BBDB1}"
 ProjectSection(SolutionItems) = preProject
 	.github\workflows\build.yml = .github\workflows\build.yml
+	.github\workflows\trigger-function.yml = .github\workflows\trigger-function.yml
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudEng.InvoiceBuilder.Workflow.Tests", "tests\CloudEng.InvoiceBuilder.Workflow.Tests\CloudEng.InvoiceBuilder.Workflow.Tests.csproj", "{48B9CF69-B46C-4D13-9E50-907925EA47CC}"
