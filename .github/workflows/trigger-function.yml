@@ -1,0 +1,9 @@
+name: Trigger invoice build
+on:
+  workflow_dispatch:
+jobs:
+  api-call:
+    runs-on: ubuntu-latest
+    steps:
+    - name: call api
+      run: curl  ${{ secrets.FUNCTION_URI_BASE }}/api/build
