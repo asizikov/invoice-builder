@@ -2,7 +2,6 @@ using CloudEng.InvoiceBuilder.Infrastructure.Security;
 using Pulumi;
 using Pulumi.AzureNative.Authorization;
 using Pulumi.AzureNative.Insights;
-using Pulumi.AzureNative.Resources;
 using Pulumi.AzureNative.Storage;
 using Pulumi.AzureNative.Web;
 using Pulumi.AzureNative.Web.Inputs;
@@ -17,25 +16,22 @@ namespace CloudEng.InvoiceBuilder.Infrastructure {
     [Output] public Output<string> ResourceGroupName { get; set; }
 
     public InvoiceBuilderStack() {
-      var resourceGroup = new ResourceGroup("cloud-eng-invoice-builder", new ResourceGroupArgs {
-        Location = Constants.Location
-      });
 
-      var fileStorageAccount = CreateFileStorageAccount("files-storage", "sacloudenginvoicefiles", resourceGroup);
-      var functionStorageAccount = CreateFileStorageAccount("function-storage", "sacloudenginvoicefunc", resourceGroup);
+      var fileStorageAccount = CreateFileStorageAccount("files-storage", "sacloudenginvoicefiles");
+      var functionStorageAccount = CreateFileStorageAccount("function-storage", "sacloudenginvoicefunc");
 
-      var appServicePlan = CreateAppServicePlan(resourceGroup);
+      var appServicePlan = CreateAppServicePlan();
       var clientConfig = GetClientConfig.InvokeAsync().Result;
 
       var appInsights = new Component("invoice-builder-app-insights", new ComponentArgs {
         ApplicationType = ApplicationType.Web,
         Kind = "web",
-        ResourceGroupName = resourceGroup.Name,
-        Location = resourceGroup.Location
+        ResourceGroupName = ResourceGroup.Name,
+        Location = ResourceGroup.Location
       });
 
       var builderFunctionApp = new WebApp("invoice-builder-app", new WebAppArgs {
-        ResourceGroupName = resourceGroup.Name,
+        ResourceGroupName = ResourceGroup.Name,
         Kind = "FunctionApp",
         ServerFarmId = appServicePlan.Id,
         Reserved = true,
@@ -54,7 +50,7 @@ namespace CloudEng.InvoiceBuilder.Infrastructure {
             },
             new NameValuePairArgs {
               Name = "AzureWebJobsStorage",
-              Value = GetConnectionString(resourceGroup.Name, functionStorageAccount.Name)
+              Value = GetConnectionString(ResourceGroup.Name, functionStorageAccount.Name)
             },
             new NameValuePairArgs {
               Name = "APPLICATIONINSIGHTS_CONNECTION_STRING",
@@ -77,14 +73,14 @@ namespace CloudEng.InvoiceBuilder.Infrastructure {
         }
       });
       var functionPrincipalId = builderFunctionApp.Identity.Apply(response => response.PrincipalId );
-      var keyVault = new KeyVault(resourceGroup, clientConfig, functionPrincipalId);
-      ResourceGroupName = resourceGroup.Name;
+      var keyVault = new KeyVault(clientConfig, functionPrincipalId);
+      ResourceGroupName = ResourceGroup.Name;
     }
 
-    private static AppServicePlan CreateAppServicePlan(ResourceGroup resourceGroup) {
+    private static AppServicePlan CreateAppServicePlan() {
       return new AppServicePlan("asp-invoice-builder-func", new AppServicePlanArgs {
-        ResourceGroupName = resourceGroup.Name,
-        Location = resourceGroup.Location,
+        ResourceGroupName = ResourceGroup.Name,
+        Location = ResourceGroup.Location,
         Kind = "FunctionApp",
         Reserved = true,
         Sku = new SkuDescriptionArgs {
@@ -94,12 +90,12 @@ namespace CloudEng.InvoiceBuilder.Infrastructure {
       });
     }
 
-    private static StorageAccount CreateFileStorageAccount(string filesStorageName, string filesAccountName, ResourceGroup resourceGroup) {
+    private static StorageAccount CreateFileStorageAccount(string filesStorageName, string filesAccountName) {
       return new StorageAccount(filesStorageName, new StorageAccountArgs {
         AccountName = filesAccountName,
         Kind = Kind.StorageV2,
-        Location = resourceGroup.Location,
-        ResourceGroupName = resourceGroup.Name,
+        Location = ResourceGroup.Location,
+        ResourceGroupName = ResourceGroup.Name,
         Sku = new SkuArgs {
           Name = SkuName.Standard_LRS
         }
@@ -108,7 +104,7 @@ namespace CloudEng.InvoiceBuilder.Infrastructure {
 
     private static Output<string> GetConnectionString(Input<string> resourceGroupName, Input<string> accountName) {
       // Retrieve the primary storage account key.
-      var storageAccountKeys = Output.All<string>(resourceGroupName, accountName).Apply(t => {
+      Output<ListStorageAccountKeysResult> storageAccountKeys = Output.All<string>(resourceGroupName, accountName).Apply(t => {
         var resourceGroupName = t[0];
         var accountName = t[1];
         return ListStorageAccountKeys.InvokeAsync(

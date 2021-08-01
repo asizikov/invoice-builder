@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{879DBA6C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudEng.InvoiceBuilder.Infrastructure", "infra\CloudEng.InvoiceBuilder.Infrastructure\CloudEng.InvoiceBuilder.Infrastructure.csproj", "{97CEA970-195B-4D8D-87BF-39BC2D139D19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudEng.InvoiceBuilder.Infrastructure.Tests", "infra\CloudEng.InvoiceBuilder.Infrastructure.Tests\CloudEng.InvoiceBuilder.Infrastructure.Tests.csproj", "{493CF87E-4346-41D8-BC66-427B688E86F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{97CEA970-195B-4D8D-87BF-39BC2D139D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97CEA970-195B-4D8D-87BF-39BC2D139D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97CEA970-195B-4D8D-87BF-39BC2D139D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{493CF87E-4346-41D8-BC66-427B688E86F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{493CF87E-4346-41D8-BC66-427B688E86F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493CF87E-4346-41D8-BC66-427B688E86F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{493CF87E-4346-41D8-BC66-427B688E86F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EF5E4C43-BCE2-4744-ABA8-9AA961F9A0B6} = {38766B5B-8DE6-4A88-BB65-A5B79DB48C28}
@@ -65,5 +71,6 @@ Global
 		{95178660-5064-47C3-B0FF-06C8608BBDB1} = {B89FA52C-BFD4-41F1-B37B-1C7BAD2C6800}
 		{48B9CF69-B46C-4D13-9E50-907925EA47CC} = {9E340399-C40E-4669-9D05-6C863015C219}
 		{97CEA970-195B-4D8D-87BF-39BC2D139D19} = {879DBA6C-885C-4AAE-86E0-692A0969F166}
+		{493CF87E-4346-41D8-BC66-427B688E86F3} = {879DBA6C-885C-4AAE-86E0-692A0969F166}
 	EndGlobalSection
 EndGlobal

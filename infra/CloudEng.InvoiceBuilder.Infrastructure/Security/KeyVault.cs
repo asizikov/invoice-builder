@@ -2,13 +2,12 @@
 using Pulumi.AzureNative.Authorization;
 using Pulumi.AzureNative.KeyVault;
 using Pulumi.AzureNative.KeyVault.Inputs;
-using Pulumi.AzureNative.Resources;
 
 namespace CloudEng.InvoiceBuilder.Infrastructure.Security {
   public class KeyVault {
-    public KeyVault(ResourceGroup resourceGroup, GetClientConfigResult clientConfig, Output<string> functionPrincipalId) {
+    public KeyVault(GetClientConfigResult clientConfig, Output<string> functionPrincipalId) {
       var keyVault = new Vault("invoice-builder-vault", new VaultArgs {
-        Location = resourceGroup.Location,
+        Location = ResourceGroup.Location,
         Properties = new VaultPropertiesArgs {
           AccessPolicies = new[] {
             new AccessPolicyEntryArgs {
@@ -33,7 +32,7 @@ namespace CloudEng.InvoiceBuilder.Infrastructure.Security {
           TenantId = clientConfig.TenantId,
         },
 
-        ResourceGroupName = resourceGroup.Name,
+        ResourceGroupName = ResourceGroup.Name,
         VaultName = "invoice-builder-vault",
       });
     }
