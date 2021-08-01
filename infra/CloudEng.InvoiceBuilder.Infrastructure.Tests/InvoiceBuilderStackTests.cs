@@ -15,7 +15,7 @@ namespace CloudEng.InvoiceBuilder.Infrastructure.Tests {
       _testOutputHelper = testOutputHelper;
     }
 
-    [Fact]
+    [Fact, Trait("Category", "Infrastructure")]
     public async Task Stack_Creation_Does_Not_Fail() {
       try {
         var resources = await Testing.RunAsync<InvoiceBuilderStack>();

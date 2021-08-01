@@ -35,22 +35,23 @@ namespace CloudEng.InvoiceBuilder.Infrastructure.Tests {
 #pragma warning disable 1998
     public async Task<object> CallAsync(MockCallArgs args) {
 #pragma warning restore 1998
+      var outputs = ImmutableDictionary.CreateBuilder<string, object>();
+      outputs.AddRange(args.Args);
+
       if (args.Token == "azure-native:authorization:getClientConfig") {
-        return new Dictionary<string, object> {
-          {"ClientId", Guid.NewGuid().ToString()},
-          {"ObjectId", Guid.NewGuid().ToString()},
-          {"SubscriptionId", Guid.NewGuid().ToString()},
-          {"TenantId", Guid.NewGuid().ToString()}
-        };
+        outputs.Add("ClientId", Guid.NewGuid().ToString());
+        outputs.Add("ObjectId", Guid.NewGuid().ToString());
+        outputs.Add("SubscriptionId", Guid.NewGuid().ToString());
+        outputs.Add("TenantId", Guid.NewGuid().ToString());
+        return outputs;
       }
 
       if (args.Token == "azure-native:storage:listStorageAccountKeys") {
-        return new Dictionary<string, object> {
-          {"Keys", new[] {"primaryKey"}}
-        };
+        outputs.Add("Keys", new[] {"primaryKey"});
+        return outputs;
       }
 
-      return args.Args;
+      return outputs;
     }
   }
 }

@@ -22,6 +22,8 @@ jobs:
       with:
           dotnet-version: 3.1.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore --nologo
     - name: Build
-      run: dotnet build
+      run: dotnet build --no-restore --nologo
+    - name: Run unit tests
+      run: dotnet test --filter Category!=Infrastructure --nologo --no-build
